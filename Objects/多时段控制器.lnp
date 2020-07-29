@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj" 
+TO ".\Objects\多时段控制器" 
+PRINT(".\Listings\多时段控制器.m51") RAMSIZE(256) 

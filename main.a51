@@ -1,0 +1,421 @@
+KEY1 EQU P1.0
+KEY2 EQU P1.1
+KEY3 EQU P1.2
+KEY4 EQU P1.3	
+	ORG 0000H	
+	AJMP MAIN
+    ORG 000BH
+	AJMP TIMER1
+	ORG 01BH
+	AJMP TIMER2
+MAIN:
+	MOV 30H,#1
+	SETB P3.0
+	MOV R5,#20
+	MOV R2,#5
+	MOV R3,#5
+	MOV R4,#15
+	MOV TMOD,#11H
+	MOV TH0,#03CH
+	MOV TL0,#0B0H
+	MOV TH1,#0D8H
+	MOV TL1,#0F0H
+	MOV IE,#8AH
+	SETB TR0
+	SETB TR1
+	ACALL DISPLAY
+	SJMP $-2
+TIMER1:
+	  MOV TH0,#03CH
+	  MOV TL0,#0B0H
+	  DJNZ R3,T001
+	  CPL F0
+	  MOV R3,#5
+	  T001:
+	  DJNZ R5,T0_EX
+	  MOV R5,#20
+	  DJNZ R4,TO
+	  MOV 30H,#1
+	  TO:
+	  INC 26H  
+	  MOV A,26H
+	  CJNE A,#60,T0_EX
+	  MOV 26H,#0 
+      INC 27H
+	  MOV A,27H
+	  CJNE A,#60,T0_EX
+	  MOV 27H,#0
+	  INC 28H
+	  MOV A,28H
+	  CJNE A,#24,T0_EX
+	  MOV 28H,#0
+T0_EX: 
+		MOV A,30H
+		CJNE A,#1,EX2
+		ACALL ALSM
+		EX2:	
+			RETI
+ TIMER2:
+		MOV TH1,#0D8H
+		MOV TL1,#0F0H
+		DJNZ R2,EX
+		MOV R2,#5
+		ACALL KEYPRESS
+		EX:
+		  RETI
+		KEYPRESS:
+				JNB KEY1,K1
+				JNB KEY2,K2
+				JNB KEY3,K3
+				JNB KEY4,K41
+				AJMP OUT
+				K41:
+					AJMP K4
+				K1:
+					MOV R2,#50
+					MOV R4,#15
+					INC 30H
+					MOV 31H,#1
+					MOV A,30H
+					CJNE A,#7,OUT10
+					MOV 30H,#1
+					OUT10:
+					AJMP OUT
+					K2:
+						MOV R2,#50
+						MOV R4,#15
+						INC 31H
+						MOV A,31H
+						CJNE A,#5,OUT1
+						MOV 31H,#1
+						AJMP OUT
+						K3:
+						    MOV R3,#5
+							CLR F0
+							MOV R2,#15
+							MOV R4,#15
+							MOV A,30H
+							CJNE A,#1,T01
+							LJMP OUT
+						T01:CJNE A,#2,T02
+							INC 28H
+							MOV A,28H
+							CJNE A,#24,OUT1
+							MOV 28H,#0
+							LJMP OUT
+						T02:CJNE A,#3,T03
+							INC 27H
+							MOV A,27H
+							CJNE A,#60,OUT
+							MOV 27H,#0
+						OUT1:
+							SJMP OUT
+						T03:
+							MOV @R0,31H
+							SWAP A
+							XCHD A,@R0
+							MOV R1,A
+							MOV A,@R1
+							INC A
+							MOV 32H,A
+							MOV A,31H
+							JNB ACC.0,TK1
+							MOV A,32H
+							CJNE A,#24,T03O
+							MOV 32H,#0
+							SJMP T03O
+						TK1:
+							MOV A,32H
+							CJNE A,#60,T03O
+							MOV 32H,#0
+						T03O:
+							MOV @R1,32H
+							SJMP OUT
+						K4:
+						    MOV R3,#5
+							CLR F0
+							MOV R2,#15
+							MOV R4,#15
+							MOV A,30H
+							CJNE A,#1,S01
+							SJMP OUT
+						S01:CJNE A,#2,S02
+							DEC 28H
+							MOV A,28H
+							CJNE A,#0FFH,OUT
+							MOV 28H,#23
+							SJMP OUT
+						S02:CJNE A,#3,S03
+							DEC 27H
+							MOV A,27H
+							CJNE A,#0FFH,OUT
+							MOV 27H,#59
+							SJMP OUT
+						S03:
+							MOV @R0,31H
+							SWAP A
+							XCHD A,@R0
+							MOV R1,A
+							MOV A,@R1
+							DEC A
+							MOV 32H,A
+							MOV A,31H
+							JNB ACC.0,PK1
+							MOV A,32H
+							CJNE A,#0FFH,S03O
+							MOV 32H,#23
+							SJMP S03O
+						PK1:
+							MOV A,32H
+							CJNE A,#0FFH,S03O
+							MOV 32H,#59
+						S03O:
+							MOV @R1,32H
+						OUT:
+							 RET			
+DISPLAY: 
+	MOV A,30H
+	JB ACC.2,DISP_B1
+	AJMP DISP_A
+	DISP_B1:
+		AJMP DISP_B
+ DISP_A:
+	    MOV A,26H
+	    MOV B,#10
+	    DIV AB
+	    MOV 20H,B  
+	    MOV 21H,A  
+		
+		MOV A,30H
+		JNB ACC.1,DK3
+		JNB ACC.0,DK3
+		JNB F0,DK3
+		MOV 22H,#10
+		MOV 23H,#10
+		AJMP DK4
+		DK3:
+	    MOV A,27H
+	    MOV B,#10
+	    DIV AB
+	    MOV 22H,B  
+	    MOV 23H,A  
+		
+		MOV A,30H
+		JNB ACC.1,DK4
+		JB ACC.0,DK4
+		JNB F0,DK4
+		MOV 24H,#10
+		MOV 25H,#10
+		AJMP DK5
+		DK4:
+	    MOV A,28H
+	    MOV B,#10
+	    DIV AB
+	    MOV 24H,B  
+	    MOV 25H,A 	
+		DK5:
+		MOV 37H,#0FFH
+        MOV P2,37H
+		MOV A,20H
+		ACALL DSP
+		MOV P0,A
+		ACALL WXM	
+		MOV A,21H
+		ACALL DSP
+		MOV P0,A
+		ACALL WXM
+		MOV P0,#40H
+		ACALL WXM
+		MOV A,22H
+		ACALL DSP
+		MOV P0,A
+		ACALL WXM	
+		MOV A,23H
+		ACALL DSP
+		MOV P0,A
+		ACALL WXM
+		MOV P0,#40H
+		ACALL WXM	
+		MOV A,24H
+		ACALL DSP
+		MOV P0,A
+		ACALL WXM	
+		MOV A,25H
+		ACALL DSP
+		MOV P0,A
+		ACALL WXM
+        LJMP DOUT
+		DISP_B:
+			JB ACC.1,BK2
+			JB ACC.0,BK1
+			MOV 33H,41H
+			MOV 34H,42H
+			MOV 35H,43H
+			MOV 36H,44H
+			AJMP PUTS
+			BK1:
+				MOV 33H,51H
+				MOV 34H,52H
+				MOV 35H,53H
+				MOV 36H,54H
+				AJMP PUTS
+				BK2:
+					MOV 33H,61H
+					MOV 34H,62H
+					MOV 35H,63H
+					MOV 36H,64H
+					PUTS:
+						MOV A,31H
+						JNB ACC.2,BK3
+						JNB F0,BK3
+						MOV 5BH,#10
+						MOV 5CH,#10
+						AJMP BK4
+						BK3:
+							MOV A,36H
+							MOV B,#10
+							DIV AB
+							MOV 5CH,B
+							MOV 5BH,A
+					BK4:
+						MOV A,31H
+						JB ACC.2,BK5
+						JNB ACC.1,BK5
+						JNB ACC.0,BK5
+						JNB F0,BK5
+						MOV 59H,#10
+						MOV 5AH,#10
+						AJMP BK6
+						BK5:
+							MOV A,35H
+							MOV B,#10
+							DIV AB 
+							MOV 5AH,B
+							MOV 59H,A
+					BK6:
+						MOV A,31H
+						JB ACC.2,BK7
+						JNB ACC.1,BK7
+						JB ACC.0,BK7
+						JNB F0,BK7
+						MOV 57H,#10
+						MOV 58H,#10
+						AJMP BK8
+						BK7:
+							MOV A,34H
+							MOV B,#10
+							DIV AB
+							MOV 58H,B
+							MOV 57H,A
+					BK8:
+						MOV A,31H
+						JB ACC.2,BK9
+						JB ACC.1,BK9
+						JNB ACC.0,BK9
+						JNB F0,BK9
+						MOV 55H,#10
+						MOV 56H,#10
+						AJMP XS
+						BK9:
+							MOV A,33H
+							MOV B,#10
+							DIV AB
+							MOV 56H,B
+							MOV 55H,A
+		XS:						
+			MOV 37H,#0FFH
+			MOV P2,37H
+			MOV A,5CH
+			ACALL DSP
+			MOV P0,A
+			ACALL WXM
+			MOV A,5BH
+			ACALL DSP
+			MOV P0,A
+			ACALL WXM
+			MOV A,5AH
+			ACALL DSP
+			MOV P0,A
+			ACALL WXM
+			MOV A,59H
+			ACALL DSP
+			MOV P0,A
+			ACALL WXM
+			MOV A,58H
+			ACALL DSP
+			MOV P0,A
+			SETB P0.7
+			ACALL WXM
+			MOV A,57H
+			ACALL DSP
+			MOV P0,A
+			ACALL WXM
+			MOV A,56H
+			ACALL DSP
+			MOV P0,A
+			ACALL WXM
+			MOV A,55H
+			ACALL DSP
+			MOV P0,A
+			ACALL WXM
+			DOUT:
+				RET
+ALSM:
+	MOV A,41H
+	CJNE A,28H,AK1
+	MOV A,42H
+	CJNE A,27H,AK1
+	CLR P3.0
+	AK1:
+		MOV A,51H
+		CJNE A,28H,AK2
+		MOV A,52H
+		CJNE A,27H,AK2
+		CLR P3.0
+		AK2:
+			MOV A,61H
+			CJNE A,28H,AK3
+			MOV A,62H
+			CJNE A,27H,AK3
+			CLR P3.0
+AK3:
+	MOV A,43H
+	CJNE A,28H,AK4
+	MOV A,44H
+	CJNE A,27H,AK4
+	SETB P3.0
+	AK4:
+		MOV A,53H
+		CJNE A,28H,AK5
+		MOV A,54H
+		CJNE A,27H,AK5
+		SETB P3.0
+		AK5:
+			MOV A,63H
+			CJNE A,28H,AK6
+			MOV A,64H
+			CJNE A,27H,AK6
+AK6:
+	RET
+DELAY: 
+     MOV R7,#2
+ D1: MOV R6,#40
+	 DJNZ R6,$
+	 DJNZ R7,D1
+	 RET
+WXM:
+    MOV P2,37H
+    ACALL DELAY
+	DEC 37H
+	MOV P0,#00H
+	MOV P2,37H
+	RET
+DSP: 
+   MOV DPTR,#TAB
+   MOVC A,@A+DPTR
+    RET
+TAB:
+	DB 3FH,06H,5BH,4FH,66H
+	DB 6DH,7DH,07H,7FH,6FH
+	DB 00H
+		  END
