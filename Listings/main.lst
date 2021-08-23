@@ -1,10 +1,10 @@
-A51 MACRO ASSEMBLER  MAIN                                                                 07/07/2020 01:20:19 PAGE     1
+A51 MACRO ASSEMBLER  MAIN                                                                 08/23/2021 23:02:26 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
 OBJECT MODULE PLACED IN .\Objects\main.obj
-ASSEMBLER INVOKED BY: D:\Keil C51\C51\BIN\A51.EXE main.a51 SET(SMALL) DEBUG PRINT(.\Listings\main.lst) OBJECT(.\Objects\
-                      main.obj) EP
+ASSEMBLER INVOKED BY: D:\Software\Keil\C51\BIN\A51.EXE main.a51 SET(SMALL) DEBUG PRINT(.\Listings\main.lst) OBJECT(.\Obj
+                      ects\main.obj) EP
 
 LOC  OBJ            LINE     SOURCE
 
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
 007C 51EA             55                     ACALL ALSM
 007E                  56                     EX2:    
 007E 32               57                             RETI
-A51 MACRO ASSEMBLER  MAIN                                                                 07/07/2020 01:20:19 PAGE     2
+A51 MACRO ASSEMBLER  MAIN                                                                 08/23/2021 23:02:26 PAGE     2
 
 007F                  58      TIMER2:
 007F 758DD8           59                     MOV TH1,#0D8H
@@ -133,7 +133,7 @@ LOC  OBJ            LINE     SOURCE
 00F7 E531            121                                                             MOV A,31H
 00F9 30E00A          122                                                             JNB ACC.0,TK1
 00FC E532            123                                                             MOV A,32H
-A51 MACRO ASSEMBLER  MAIN                                                                 07/07/2020 01:20:19 PAGE     3
+A51 MACRO ASSEMBLER  MAIN                                                                 08/23/2021 23:02:26 PAGE     3
 
 00FE B4180D          124                                                             CJNE A,#24,T03O
 0101 753200          125                                                             MOV 32H,#0
@@ -201,7 +201,7 @@ LOC  OBJ            LINE     SOURCE
 0174 F521            187                 MOV 21H,A  
                      188                     
 0176 E530            189                     MOV A,30H
-A51 MACRO ASSEMBLER  MAIN                                                                 07/07/2020 01:20:19 PAGE     4
+A51 MACRO ASSEMBLER  MAIN                                                                 08/23/2021 23:02:26 PAGE     4
 
 0178 30E10E          190                     JNB ACC.1,DK3
 017B 30E00B          191                     JNB ACC.0,DK3
@@ -269,7 +269,7 @@ LOC  OBJ            LINE     SOURCE
 0201 854335          253                             MOV 35H,43H
 0204 854436          254                             MOV 36H,44H
 0207 4123            255                             AJMP PUTS
-A51 MACRO ASSEMBLER  MAIN                                                                 07/07/2020 01:20:19 PAGE     5
+A51 MACRO ASSEMBLER  MAIN                                                                 08/23/2021 23:02:26 PAGE     5
 
 0209                 256                             BK1:
 0209 855133          257                                     MOV 33H,51H
@@ -337,7 +337,7 @@ LOC  OBJ            LINE     SOURCE
 0296                 319                                                     BK9:
 0296 E533            320                                                             MOV A,33H
 0298 75F00A          321                                                             MOV B,#10
-A51 MACRO ASSEMBLER  MAIN                                                                 07/07/2020 01:20:19 PAGE     6
+A51 MACRO ASSEMBLER  MAIN                                                                 08/23/2021 23:02:26 PAGE     6
 
 029B 84              322                                                             DIV AB
 029C 85F056          323                                                             MOV 56H,B
@@ -405,7 +405,7 @@ LOC  OBJ            LINE     SOURCE
 0315 B52702          385             CJNE A,27H,AK4
 0318 D2B0            386             SETB P3.0
 031A                 387             AK4:
-A51 MACRO ASSEMBLER  MAIN                                                                 07/07/2020 01:20:19 PAGE     7
+A51 MACRO ASSEMBLER  MAIN                                                                 08/23/2021 23:02:26 PAGE     7
 
 031A E553            388                     MOV A,53H
 031C B52807          389                     CJNE A,28H,AK5
@@ -443,7 +443,7 @@ LOC  OBJ            LINE     SOURCE
 0356 6F                      
 0357 00              420             DB 00H
                      421                       END
-A51 MACRO ASSEMBLER  MAIN                                                                 07/07/2020 01:20:19 PAGE     8
+A51 MACRO ASSEMBLER  MAIN                                                                 08/23/2021 23:02:26 PAGE     8
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -511,7 +511,7 @@ S03O . . . . . . .  C ADDR   015FH   A
 T001 . . . . . . .  C ADDR   0050H   A   
 T01. . . . . . . .  C ADDR   00CFH   A   
 T02. . . . . . . .  C ADDR   00DFH   A   
-A51 MACRO ASSEMBLER  MAIN                                                                 07/07/2020 01:20:19 PAGE     9
+A51 MACRO ASSEMBLER  MAIN                                                                 08/23/2021 23:02:26 PAGE     9
 
 T03. . . . . . . .  C ADDR   00EEH   A   
 T03O . . . . . . .  C ADDR   010EH   A   
